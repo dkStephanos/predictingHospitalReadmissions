@@ -42,25 +42,30 @@ class DataUtil(object):
 
     @staticmethod
     def encodeCategoricalCols(dataFrame):
-
+        le = LabelEncoder()
         categorical_cols = ['race', 'gender', 'age', 'admission_type_id', 'discharge_disposition_id', 'admission_source_id', 
-                            'metaformin', 'repaglinide', 'nateglinide', 'chlorpropamide', 'glimepiride', 'acetohexamide', 
+                            'metformin', 'repaglinide', 'nateglinide', 'chlorpropamide', 'glimepiride', 'acetohexamide', 
                             'glipizide', 'glyburide', 'tolbutamide', 'pioglitazone', 'rosiglitazone', 'acarbose', 'miglitol', 
                             'troglitazone', 'tolazamide', 'examide', 'citoglipton', 'insulin', 'glyburide.metformin', 'glipizide.metformin',
                             'glimepiride.pioglitazone', 'metformin.rosiglitazone', 'metformin.pioglitazone', 'change', 'diabetesMed', 'diag_1', 'diag_2', 'diag_3']
-        le = LabelEncoder()
+        
         # apply le on categorical feature columns
+        dataFrame[categorical_cols] = dataFrame[categorical_cols].fillna('NaN')
         dataFrame[categorical_cols] = dataFrame[categorical_cols].apply(lambda col: le.fit_transform(col))
+
+        # Changes encoded version of NaN back np.NaN for cols we wan't to impute
+        dataFrame['admission_type_id'] = np.where((dataFrame['admission_type_id'] == 2.0), np.NaN, dataFrame['admission_type_id'])
+        dataFrame['discharge_disposition_id'] = np.where((dataFrame['discharge_disposition_id'] == 1.0), np.NaN, dataFrame['discharge_disposition_id'])
+        dataFrame['admission_source_id'] = np.where((dataFrame['admission_source_id'] == 1.0), np.NaN, dataFrame['admission_source_id'])
 
         return dataFrame
 
     @staticmethod
     def imputeMissingValues(dataFrame, numNeighbors, colsToImpute):
-        imputer = KNNImputer(n_neighbors=numNeighbors)
 
         for col in colsToImpute:
-            dataFrame[col] = imputer.transform(dataFrame[col].values.reshape(-1, 1))
-        
+            dataFrame[col] = dataFrame[col].fillna(dataFrame[col].mode()[0])
+
         return dataFrame
 
     @staticmethod
