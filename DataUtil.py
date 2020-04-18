@@ -36,3 +36,9 @@ class DataUtil(object):
         dataFrameFilled = imputer.fit_transform(dataFrame)
         
         return dataFrame
+
+    @staticmethod
+    def setNaNValuesOfCol(dataFrame, col, value):
+        dataFrame = dataFrame[col].fillna(value)
+
+        return dataFrame
