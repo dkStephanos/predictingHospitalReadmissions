@@ -11,5 +11,6 @@ if __name__ == '__main__':
 
     # --- Pattern Mining ---
     cleanPatientDF = DriverHelper.getCleanPatientDF()
+    patterns = PatternUtil.getPatterns(cleanPatientDF)
 
     print("fuck")

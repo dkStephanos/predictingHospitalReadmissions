@@ -8,7 +8,7 @@ class DriverHelper(object):
         return FileReaderUtil.getRawPatientData('10kPatients.csv')
 
     @staticmethod
-    def getRawPatientDF():
+    def getCleanPatientDF():
         return FileReaderUtil.getRawPatientData('cleanPatientDF.csv')
     
     @staticmethod
