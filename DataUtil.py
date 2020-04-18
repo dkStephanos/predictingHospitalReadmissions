@@ -76,7 +76,9 @@ class DataUtil(object):
 
     @staticmethod
     def trimOutliersBySTD(dataFrame, factor):
-        for col in dataFrame.iloc[:,1:]:
+        numeric_cols = ['time_in_hospital', 'num_lab_procedures', 'num_medications', 'number_outpatient', 'number_emergency', 
+                        'number_inpatient', 'number_diagnoses']
+        for col in numeric_cols:
             upper_lim = dataFrame[col].mean () + dataFrame[col].std () * factor
             lower_lim = dataFrame[col].mean () - dataFrame[col].std () * factor
             dataFrame = dataFrame[(dataFrame[col] < upper_lim) & (dataFrame[col] > lower_lim)]
