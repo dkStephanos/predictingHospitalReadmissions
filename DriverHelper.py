@@ -1,2 +1,7 @@
+from FileReaderUtil import FileReaderUtil
+
 class DriverHelper(object):
-    pass
+    
+    @staticmethod
+    def getRawPatientDF():
+        return FileReaderUtil.getRawPatientData('10kPatients.csv')
