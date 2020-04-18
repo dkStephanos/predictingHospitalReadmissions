@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.impute import KNNImputer
 
 class DataUtil(object):
 
@@ -26,4 +27,12 @@ class DataUtil(object):
     def dropDirtyCols(dataFrame, colsToDrop):
         dataFrame = dataFrame.drop(colsToDrop, axis=1)
 
+        return dataFrame
+
+    @staticmethod
+    def imputeMissingValues(dataFrame, numNeighbors):
+        imputer = KNNImputer(n_neighbors=numNeighbors)
+
+        dataFrameFilled = imputer.fit_transform(dataFrame)
+        
         return dataFrame
