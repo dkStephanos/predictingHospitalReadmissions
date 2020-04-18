@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.impute import KNNImputer
+from sklearn.preprocessing import LabelEncoder
 
 class DataUtil(object):
 
@@ -8,6 +9,8 @@ class DataUtil(object):
     def setMissingValuesToNaN(dataFrame):
         dataFrame = dataFrame.replace('?', np.NaN)
         dataFrame = dataFrame.replace('None', np.NaN)
+        dataFrame = dataFrame.replace('Not Available', np.NaN)
+        dataFrame = dataFrame.replace('Not Mapped', np.NaN)
 
         return dataFrame
 
@@ -30,15 +33,21 @@ class DataUtil(object):
         return dataFrame
 
     @staticmethod
-    def imputeMissingValues(dataFrame, numNeighbors):
+    def imputeMissingValues(dataFrame, numNeighbors, colsToImpute):
+        labelencoder = LabelEncoder()
         imputer = KNNImputer(n_neighbors=numNeighbors)
 
-        dataFrameFilled = imputer.fit_transform(dataFrame)
+        for col in colsToImpute:
+            # Encodes categorical data
+            dataFrame[col] = dataFrame[col].fillna('NaN')
+            dataFrame[col] = labelencoder.fit_transform(dataFrame[col])
+            imputer.fit(dataFrame[col].values.reshape(-1, 1))
+            dataFrame[col] = imputer.transform(dataFrame[col].values.reshape(-1, 1))
         
         return dataFrame
 
     @staticmethod
     def setNaNValuesOfCol(dataFrame, col, value):
-        dataFrame = dataFrame[col].fillna(value)
+        dataFrame[col] = dataFrame[col].fillna(value)
 
         return dataFrame
