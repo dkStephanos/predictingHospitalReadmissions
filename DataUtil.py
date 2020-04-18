@@ -33,15 +33,32 @@ class DataUtil(object):
         return dataFrame
 
     @staticmethod
+    def convertNumericCols(dataFrame):
+        numeric_cols = ['time_in_hospital', 'num_lab_procedures', 'num_medications', 'number_outpatient', 'number_emergency', 
+                        'number_inpatient', 'number_diagnoses']
+        dataFrame[numeric_cols] = dataFrame[numeric_cols].apply(pd.to_numeric)
+
+        return dataFrame
+
+    @staticmethod
+    def encodeCategoricalCols(dataFrame):
+
+        categorical_cols = ['race', 'gender', 'age', 'admission_type_id', 'discharge_disposition_id', 'admission_source_id', 
+                            'metaformin', 'repaglinide', 'nateglinide', 'chlorpropamide', 'glimepiride', 'acetohexamide', 
+                            'glipizide', 'glyburide', 'tolbutamide', 'pioglitazone', 'rosiglitazone', 'acarbose', 'miglitol', 
+                            'troglitazone', 'tolazamide', 'examide', 'citoglipton', 'insulin', 'glyburide.metformin', 'glipizide.metformin',
+                            'glimepiride.pioglitazone', 'metformin.rosiglitazone', 'metformin.pioglitazone', 'change', 'diabetesMed', 'diag_1', 'diag_2', 'diag_3']
+        le = LabelEncoder()
+        # apply le on categorical feature columns
+        dataFrame[categorical_cols] = dataFrame[categorical_cols].apply(lambda col: le.fit_transform(col))
+
+        return dataFrame
+
+    @staticmethod
     def imputeMissingValues(dataFrame, numNeighbors, colsToImpute):
-        labelencoder = LabelEncoder()
         imputer = KNNImputer(n_neighbors=numNeighbors)
 
         for col in colsToImpute:
-            # Encodes categorical data
-            dataFrame[col] = dataFrame[col].fillna('NaN')
-            dataFrame[col] = labelencoder.fit_transform(dataFrame[col])
-            imputer.fit(dataFrame[col].values.reshape(-1, 1))
             dataFrame[col] = imputer.transform(dataFrame[col].values.reshape(-1, 1))
         
         return dataFrame
@@ -49,5 +66,14 @@ class DataUtil(object):
     @staticmethod
     def setNaNValuesOfCol(dataFrame, col, value):
         dataFrame[col] = dataFrame[col].fillna(value)
+
+        return dataFrame
+
+    @staticmethod
+    def trimOutliersBySTD(dataFrame, factor):
+        for col in dataFrame.iloc[:,1:]:
+            upper_lim = dataFrame[col].mean () + dataFrame[col].std () * factor
+            lower_lim = dataFrame[col].mean () - dataFrame[col].std () * factor
+            dataFrame = dataFrame[(dataFrame[col] < upper_lim) & (dataFrame[col] > lower_lim)]
 
         return dataFrame
