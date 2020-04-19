@@ -1,26 +1,25 @@
-from apyori import apriori
+import pandas as pd
+import numpy as np
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelEncoder
 
 class PatternUtil(object):
    
     @staticmethod
     def getPatterns(dataFrame):
+        le = LabelEncoder()
+        # Encode dataFrame
+        dataFrame = pd.get_dummies(dataFrame)
+
         # Collecting the inferred rules in a dataframe 
-        association_rules = apriori(dataFrame.values, min_support=0.005, min_confidence=0.8, min_length=2)
-        association_results = list(association_rules)
+        freq_items = apriori(dataFrame, min_support=0.6, use_colnames=True, max_len=5, verbose=1)
+        print(freq_items.head())
 
-        filteredResults = []
-        #Filtering our results to just rules that rhs is survived
-        for result in association_results:
-            for entry in result.ordered_statistics:
-                if entry.items_add == frozenset({'Yes'}):
-                    filteredResults.append(entry)
+        rules = association_rules(freq_items, metric="confidence", min_threshold=0.6)
+        print(rules.head())
 
-        print("\nNumber of rules: {0}\n".format(len(filteredResults)))
-
-        #Sorting by lift
-        sortedResults = sorted(filteredResults, key=lambda x: x.lift, reverse=True)
-        for result in sortedResults:
-            print(str(result))
-
+        return rules
 
 
