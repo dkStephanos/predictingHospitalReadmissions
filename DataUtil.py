@@ -41,6 +41,21 @@ class DataUtil(object):
         return dataFrame
 
     @staticmethod
+    def encodeForModeling(dataFrame):
+        le = LabelEncoder()
+        categorical_cols = ['race', 'gender', 'age', 'admission_type_id', 'discharge_disposition_id', 'admission_source_id', 
+                            'metformin', 'repaglinide', 'nateglinide', 'chlorpropamide', 'glimepiride', 'acetohexamide', 
+                            'glipizide', 'glyburide', 'tolbutamide', 'pioglitazone', 'rosiglitazone', 'acarbose', 'miglitol', 
+                            'troglitazone', 'tolazamide', 'examide', 'citoglipton', 'insulin', 'glyburide.metformin', 'glipizide.metformin',
+                            'glimepiride.pioglitazone', 'metformin.rosiglitazone', 'metformin.pioglitazone', 'change', 'diabetesMed', 'diag_1', 'diag_2', 'diag_3', 'readmitted']
+        
+        # apply le on categorical feature columns
+        dataFrame[categorical_cols] = dataFrame[categorical_cols].fillna('NaN')
+        dataFrame[categorical_cols] = dataFrame[categorical_cols].apply(lambda col: le.fit_transform(col))
+
+        return dataFrame
+
+    @staticmethod
     def encodeCategoricalCols(dataFrame):
         le = LabelEncoder()
         categorical_cols = ['race', 'gender', 'age', 'admission_type_id', 'discharge_disposition_id', 'admission_source_id', 
