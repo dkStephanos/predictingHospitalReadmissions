@@ -10,7 +10,6 @@ class PatternUtil(object):
     @staticmethod
     def getPatterns(dataFrame):
         le = LabelEncoder()
-<<<<<<< HEAD
         categorical_cols = ['race', 'gender', 'age', 'admission_type_id', 'discharge_disposition_id', 'admission_source_id', 
                             'metformin', 'repaglinide', 'nateglinide', 'chlorpropamide', 'glimepiride', 'acetohexamide', 
                             'glipizide', 'glyburide', 'tolbutamide', 'pioglitazone', 'rosiglitazone', 'acarbose', 'miglitol', 
@@ -29,7 +28,7 @@ class PatternUtil(object):
         rules = association_rules(freq_items, metric="confidence", min_threshold=0.2)
         print(rules.head())
         rules.to_csv('AssociationRules.csv')
-=======
+
         # Encode dataFrame
         dataFrame = pd.get_dummies(dataFrame)
 
@@ -39,7 +38,6 @@ class PatternUtil(object):
 
         rules = association_rules(freq_items, metric="confidence", min_threshold=0.6)
         print(rules.head())
->>>>>>> 3665f6d5214dade7d07d7ed93ee2b1c0943e282b
 
         return rules
 

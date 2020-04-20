@@ -5,19 +5,16 @@ class DriverHelper(object):
     
     @staticmethod
     def getRawPatientDF():
-<<<<<<< HEAD
         return FileReaderUtil.getDataFromPath('Data//10kPatients.csv')
 
     @staticmethod
     def getCleanPatientDF():
         cleanPatientDF = FileReaderUtil.getDataFromPath('Data//cleanPatientDF.csv')
-=======
         return FileReaderUtil.getDataFromPath('10kPatients.csv')
 
     @staticmethod
     def getCleanPatientDF():
         cleanPatientDF = FileReaderUtil.getDataFromPath('cleanPatientDF.csv')
->>>>>>> 3665f6d5214dade7d07d7ed93ee2b1c0943e282b
         return cleanPatientDF.applymap(str)
     
     @staticmethod
@@ -32,11 +29,6 @@ class DriverHelper(object):
         rawPatientDF = DataUtil.setNaNValuesOfCol(rawPatientDF, 'race', 'Other')
         rawPatientDF = DataUtil.imputeMissingValues(rawPatientDF, 3, ['admission_type_id', 'discharge_disposition_id', 'admission_source_id'])
         cleanPatientDF = DataUtil.trimOutliersBySTD(rawPatientDF, 4)
-<<<<<<< HEAD
-=======
-
-        cleanPatientDF.to_csv('cleanPatientDF.csv')
->>>>>>> 3665f6d5214dade7d07d7ed93ee2b1c0943e282b
 
         cleanPatientDF.to_csv('Data//cleanPatientDF.csv')
 
