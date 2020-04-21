@@ -8,8 +8,8 @@ from LogisticRegression import LogReg
 if __name__ == '__main__':
 
     # --- Preprocessing ---
-    #rawPatientDF = DriverHelper.getRawPatientDF()
-    #cleanPatientDF = DriverHelper.cleanRawData(rawPatientDF)
+    rawPatientDF = DriverHelper.getRawPatientDF()
+    cleanPatientDF = DriverHelper.cleanRawData(rawPatientDF)
 
     # --- Pattern Mining ---
     #cleanPatientDF = DriverHelper.getCleanPatientDF()
@@ -17,7 +17,7 @@ if __name__ == '__main__':
     #rules = DriverHelper.getReadmittedRulesFromFile()
 
     # --- Predictive Modeling ---
-    cleanPatientDF = DriverHelper.getCleanPatientDF()
+    #cleanPatientDF = DriverHelper.getCleanPatientDF()
     cleanPatientDF = DataUtil.encodeForModeling(cleanPatientDF)
 
     kernelToUse = 'rbf' #gaussian
@@ -25,9 +25,10 @@ if __name__ == '__main__':
     chosenC = 35
     chosenS = 1
 
-    #SVM.getLearningCurve(cleanPatientDF, 45, kernelToUse, './Graphs/SVMLearningCurve1.png')
+    SVM.classify(cleanPatientDF, chosenC, chosenS, kernelToUse, testValuePercent, True, True)
+    #SVM.getLearningCurve(cleanPatientDF, 40, kernelToUse, './Graphs/SVMLearningCurve2.png')
     #average = SVM.testNIterations(cleanPatientDF, chosenC, chosenS, kernelToUse, testValuePercent, 5)
     #print("Average: ", SVM.findAverage(average))
 
-    print('Accuracy:  {0}\n'.format(LogReg.classify(cleanPatientDF)))
-    LogReg.getLearningCurve(cleanPatientDF, './Graphs/LogRegLearningCurve.png')
+    #print('Accuracy:  {0}\n'.format(LogReg.classify(cleanPatientDF)))
+    #LogReg.getLearningCurve(cleanPatientDF, './Graphs/LogRegLearningCurve2.png')
