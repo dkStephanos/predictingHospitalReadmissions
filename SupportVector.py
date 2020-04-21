@@ -38,7 +38,7 @@ class SVM:
 
     @staticmethod
     def splitTestData(dataFrame, testValuePercent, isFixed):
-        X = dataFrame.iloc[:, 2:dataFrame.shape[1]]
+        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
         Y = dataFrame['readmitted']
         if(isFixed):    #Use the same seed when generating test and training sets
             X_train, X_test, Y_train, Y_test = train_test_split(X, Y, shuffle = True, random_state = 42, test_size = float(testValuePercent/100))
@@ -112,7 +112,7 @@ class SVM:
         le.fit(dataFrame['Activity'].astype(str))
 
         y = le.transform(dataFrame['Activity'].astype(str))
-        X = dataFrame.iloc[:, 2:dataFrame.shape[1]]
+        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
 
         param_range = np.logspace(-6, -1, 5)
         train_scores, test_scores = validation_curve(
@@ -147,8 +147,9 @@ class SVM:
         le.fit(dataFrame['readmitted'].astype(str))
 
         y = le.transform(dataFrame['readmitted'].astype(str))
-        X = dataFrame.iloc[:, :dataFrame.shape[1]]
-        train_sizes = [1, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 7716]
+        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
+
+        train_sizes = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 7716]
 
         train_sizes, train_scores, validation_scores = learning_curve(
             SVC(cVal, kernelToUse), X, y, train_sizes = train_sizes, cv=5,	
@@ -169,6 +170,7 @@ class SVM:
         plt.xlabel('Training set size', fontsize = 14)
         plt.title('Learning curves for a SVM model', fontsize = 18, y = 1.03)
         plt.legend()
-        plt.ylim(0,1)
+        plt.ylim(.3,.5)
 
-        plt.savefig(directory+filename)
+        plt.savefig(filename)
+        plt.show()

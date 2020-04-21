@@ -17,7 +17,7 @@ class LogReg(object):
     @staticmethod
     def splitTrainTestSet(dataFrame, test_size):
         y = dataFrame['readmitted']
-        X = dataFrame.iloc[:, 2:dataFrame.shape[1]]
+        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)
 
         return X_train, X_test, y_train, y_test
@@ -101,7 +101,7 @@ class LogReg(object):
         le.fit(dataFrame['readmitted'].astype(str))
 
         y = le.transform(dataFrame['readmitted'].astype(str))
-        X = dataFrame.iloc[:, :dataFrame.shape[1]]
+        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
         train_sizes = [1, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 7716]
 
         train_sizes, train_scores, validation_scores = learning_curve(
@@ -125,7 +125,7 @@ class LogReg(object):
         plt.xlabel('Training set size', fontsize = 14)
         plt.title('Learning curves for a logistic regression model', fontsize = 18, y = 1.03)
         plt.legend()
-        plt.ylim(0,.5)
+        plt.ylim(.3,.45)
 
         plt.savefig(filename)
         plt.show()
