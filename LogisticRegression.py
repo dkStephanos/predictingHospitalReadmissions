@@ -17,7 +17,7 @@ class LogReg(object):
     @staticmethod
     def splitTrainTestSet(dataFrame, test_size):
         y = dataFrame['readmitted']
-        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
+        X = dataFrame.iloc[:, 2:dataFrame.shape[1]-1]
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)
 
         return X_train, X_test, y_train, y_test
@@ -101,7 +101,7 @@ class LogReg(object):
         le.fit(dataFrame['readmitted'].astype(str))
 
         y = le.transform(dataFrame['readmitted'].astype(str))
-        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
+        X = dataFrame.iloc[:, 2:dataFrame.shape[1]-1]
         train_sizes = [1, 100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 7716]
 
         train_sizes, train_scores, validation_scores = learning_curve(

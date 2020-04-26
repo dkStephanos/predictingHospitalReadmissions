@@ -25,7 +25,7 @@ class SVM:
         #gammaVal = sValue/dataFrame.shape[1]
         X_train, X_test, Y_train, Y_test = SVM.splitTestData(dataFrame, testValuePercent, isFixed)   #Split the data
 
-        svm_model_linear = SVC(kernel = kernelToUse, C = CValue).fit(X_train, Y_train)      #Generate model
+        svm_model_linear = SVC(kernel = kernelToUse, gamma=sValue, C = CValue).fit(X_train, Y_train)      #Generate model
         svm_predictions = svm_model_linear.predict(X_test)
 
         # model accuracy for X_test   
@@ -38,7 +38,7 @@ class SVM:
 
     @staticmethod
     def splitTestData(dataFrame, testValuePercent, isFixed):
-        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
+        X = dataFrame.iloc[:, 2:dataFrame.shape[1]-1]
         Y = dataFrame['readmitted']
         if(isFixed):    #Use the same seed when generating test and training sets
             X_train, X_test, Y_train, Y_test = train_test_split(X, Y, shuffle = True, random_state = 42, test_size = float(testValuePercent/100))
@@ -112,7 +112,7 @@ class SVM:
         le.fit(dataFrame['Activity'].astype(str))
 
         y = le.transform(dataFrame['Activity'].astype(str))
-        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
+        X = dataFrame.iloc[:, 2:dataFrame.shape[1]-1]
 
         param_range = np.logspace(-6, -1, 5)
         train_scores, test_scores = validation_curve(
@@ -142,12 +142,12 @@ class SVM:
         plt.savefig(directory+filename)
 
     @staticmethod
-    def getLearningCurve(dataFrame, cVal, kernelToUse, filename):
+    def getLearningCurve(dataFrame, cVal, sVal, kernelToUse, filename):
         le = LabelEncoder()
         le.fit(dataFrame['readmitted'].astype(str))
 
         y = le.transform(dataFrame['readmitted'].astype(str))
-        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-2]
+        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-1]
 
         train_sizes = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 7716]
 
@@ -170,7 +170,7 @@ class SVM:
         plt.xlabel('Training set size', fontsize = 14)
         plt.title('Learning curves for a SVM model', fontsize = 18, y = 1.03)
         plt.legend()
-        plt.ylim(.3,.5)
+        plt.ylim(.35,.4)
 
         plt.savefig(filename)
         plt.show()
