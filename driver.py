@@ -16,6 +16,13 @@ if __name__ == '__main__':
     #cleanPatientDF = DriverHelper.getCleanPatientDF()
     #patterns = PatternUtil.getPatterns(cleanPatientDF)
     #rules = DriverHelper.getReadmittedRulesFromFile()
+    rules = FileReaderUtil.getDataFromPath('./Data/AssociationRules.csv')
+    print(rules.head())
+
+    readmittedTrueRules = rules[rules['consequents'] == 'frozenset({\'readmitted_True\'})']
+    readmittedFalseRules = rules[rules['consequents'] == 'frozenset({\'readmitted_False\'})']
+    readmittedTrueRules.to_csv('./Data/TrueRules.csv')
+    readmittedFalseRules.to_csv('./Data/FalseRules.csv')
 
     # --- Predictive Modeling ---
     #cleanPatientDF = DriverHelper.getCleanPatientDF()
