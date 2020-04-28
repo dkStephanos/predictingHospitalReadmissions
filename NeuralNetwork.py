@@ -14,7 +14,7 @@ class NeuralNetwork(object):
         #Generates a classification based on user input
     #dataFrame:pandas.DataFrame - combined dataframe with all activities on one frame
     #CValue:int - the value of C for the kernel to use in classification to control boundary tightness
-    #kernelToUse:string - a designation for the kernel for the model to use... one of ‘linear’, ‘poly’, ‘rbf’ - Guassian, ‘sigmoid’, ‘precomputed’ - requires additional args
+    #kernelToUse:string - a designation for the kernel for the model to use... one of ï¿½linearï¿½, ï¿½polyï¿½, ï¿½rbfï¿½ - Guassian, ï¿½sigmoidï¿½, ï¿½precomputedï¿½ - requires additional args
     #testValuePercent:int/float - the percentage of the data that should be devoted to the test set 
     #isFixed:bool - whether or not to use a random value in the test
     #printResults:bool - whether or not to print statistics for each run

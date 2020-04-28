@@ -24,12 +24,12 @@ class LogReg(object):
 
     #Generates a classification 
     @staticmethod
-    def classify(dataFrame, test_size=.2):
+    def classify(dataFrame, chosenC, test_size=.2):
         # Split dataset
         X_train, X_test, y_train, y_test = LogReg.splitTrainTestSet(dataFrame, test_size)
 
         # Create and train the logistic model
-        logreg = LogisticRegression(C=.001)
+        logreg = LogisticRegression(C=chosenC)
         logreg.fit(X_train, y_train)
         
         # Make predictions
@@ -50,10 +50,7 @@ class LogReg(object):
         le.fit(dataFrame['readmitted'].astype(str))
 
         y = le.transform(dataFrame['readmitted'].astype(str))
-        X = dataFrame.iloc[:, 2:dataFrame.shape[1]]
-
-        # classify small against large digits
-        y = (y > 4).astype(np.int)
+        X = dataFrame.iloc[:, 1:dataFrame.shape[1]-1]
 
         l1_ratio = 0.5  # L1 weight in the Elastic-Net regularization
 
@@ -155,5 +152,7 @@ class LogReg(object):
         print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
         print("Precision:",metrics.precision_score(y_test, y_pred, average='weighted'))
         print("Recall:",metrics.recall_score(y_test, y_pred, average='weighted'))
+        print("\n\n  Confusion Matrix: ")
+        print(confusion_matrix(y_test, y_pred))
 
 

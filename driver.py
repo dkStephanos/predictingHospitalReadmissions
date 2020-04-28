@@ -33,7 +33,7 @@ if __name__ == '__main__':
     #print("Average: ", SVM.findAverage(average))
 
     #print('Accuracy:  {0}\n'.format(LogReg.classify(cleanPatientDF)))
-    #LogReg.classify(cleanPatientDF)
+    #LogReg.classifyWithRegularizationRates(cleanPatientDF)
     #LogReg.getLearningCurve(cleanPatientDF, './Graphs/LogRegLearningCurve2.png')
 
     #---- Testing Neural Network --------
@@ -43,5 +43,5 @@ if __name__ == '__main__':
     testValuePercent = 20
     fixSeed = False
     printOut = True
-    print("\nRunning Neural Network")
-    NeuralNetwork.classify(cleanPatientDF, alpha, layerDimensions, solver, testValuePercent, fixSeed, printOut)
+    #print("\nRunning Neural Network")
+    #NeuralNetwork.classify(cleanPatientDF, alpha, layerDimensions, solver, testValuePercent, fixSeed, printOut)
